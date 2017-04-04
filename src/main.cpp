@@ -30,7 +30,7 @@ void check_arguments(int argc, char* argv[]) {
   } else if (argc > 3) {
     cerr << "Too many arguments.\n" << usage_instructions << endl;
   }
-
+  
   if (!has_valid_args) {
     exit(EXIT_FAILURE);
   }
@@ -187,5 +187,6 @@ int main(int argc, char* argv[]) {
     in_file_.close();
   }
 
+  //getchar(); // to prevent console from exiting after debug
   return 0;
 }
