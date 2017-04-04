@@ -25,7 +25,7 @@ void KalmanFilter::Predict() {
     * predict the state
   */
   x_ = F_ * x_;
-  //std::cout << "X predicted: " <<x_<< std::endl;
+  std::cout << "X predicted: " <<x_<< std::endl;
   MatrixXd Ft = F_.transpose();
   P_ = F_ * P_ * Ft + Q_;
 }
@@ -37,6 +37,7 @@ void KalmanFilter::Update(const VectorXd &z) {
   */
   VectorXd z_pred = H_ * x_;
   std::cout << "z_pred value: " << z_pred << std::endl;
+  std::cout << "z value: " << z << std::endl;
   VectorXd y = z - z_pred;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
@@ -57,8 +58,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
-  /*Tools tools;
-  VectorXd new_z = tools.CalculateJacobian(z);
-  Update(new_z);*/
+  Tools tools;
+  H_ = tools.CalculateJacobian(x_);
+  Update(z);
 
 }
