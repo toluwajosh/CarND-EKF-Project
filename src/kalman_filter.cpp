@@ -35,6 +35,9 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
+  //std::cout << "z: " << z << std::endl;
+  //std::cout << "H_: " << H_ << std::endl;
+  //std::cout << "x_: " << x_ << std::endl;
   VectorXd y = z - H_ * x_;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
