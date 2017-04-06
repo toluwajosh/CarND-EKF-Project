@@ -35,10 +35,7 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
-  VectorXd z_pred = H_ * x_;
-  std::cout << "z_pred value: " << z_pred << std::endl;
-  std::cout << "z value: " << z << std::endl;
-  VectorXd y = z - z_pred;
+  VectorXd y = z - H_ * x_;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
@@ -59,6 +56,25 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
     * update the state by using Extended Kalman Filter equations
   */
   Tools tools;
+
+  float ro = z[0];
+  float phi = z[1];
+  float nu = z[2];
+
+  //MatrixXd Pj;
+  //VectorXd x_temp;
+  //Pj = MatrixXd(4, 3);
+  //x_temp = VectorXd(3);
+  //x_temp << ro, phi, nu;
+  ////ekf_.x_ << ro * cos(phi), ro * sin(phi), 0, 0; // nu * cos(phi), nu * sin(phi);
+  //Pj << cos(phi), -ro*sin(phi), 0,
+  //  sin(phi), ro*cos(phi), 0,
+  //  0, -nu*sin(phi), cos(phi),
+  //  0, nu*cos(phi), sin(phi);
+  //x_ = Pj * x_temp;
+
+  x_ << ro * cos(phi), ro * sin(phi), nu * cos(phi), nu * sin(phi);
+
   H_ = tools.CalculateJacobian(x_);
   Update(z);
 
