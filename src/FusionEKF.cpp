@@ -111,11 +111,13 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         0, nu*cos(phi), sin(phi);
       ekf_.x_ = Pj * x_temp;*/
 
-      ekf_.x_ << ro * cos(phi), ro * sin(phi), nu * cos(phi), nu * sin(phi);
+      //ekf_.x_ << ro * cos(phi), ro * sin(phi), nu * cos(phi), nu * sin(phi);
+      ekf_.x_ << ro * cos(phi), ro * sin(phi), 0, 0;
 
-      Hj_ = tools.CalculateJacobian(ekf_.x_);
-      ekf_.R_ = R_radar_;
-      ekf_.H_ = Hj_;
+
+      //Hj_ = tools.CalculateJacobian(ekf_.x_);
+      //ekf_.R_ = R_radar_;
+      //ekf_.H_ = Hj_;
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
       /**
@@ -123,8 +125,8 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       */
       ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
       //cout << "first measurement: "<<ekf_.x_ << endl;
-      ekf_.H_ = H_laser_;
-      ekf_.R_ = R_laser_;
+      //ekf_.H_ = H_laser_;
+      //ekf_.R_ = R_laser_;
     }
 
     previous_timestamp_ = measurement_pack.timestamp_;
@@ -145,7 +147,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
   //compute the time elapsed between the current and previous measurements
-  float dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
+  long long dt = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0;	//dt - expressed in seconds
   previous_timestamp_ = measurement_pack.timestamp_;
 
   float dt_2 = dt * dt;
@@ -181,15 +183,17 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // Radar updates
     
-    ekf_.R_ = R_radar_;
+    Hj_ = tools.CalculateJacobian(ekf_.x_);
     ekf_.H_ = Hj_;
+
+    ekf_.R_ = R_radar_;
     ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
     // Laser updates
     //cout << "raw measurement: " << measurement_pack.raw_measurements_ << endl;
     
-    ekf_.R_ = R_laser_;
     ekf_.H_ = H_laser_;
+    ekf_.R_ = R_laser_;
     ekf_.Update(measurement_pack.raw_measurements_);
   }
 

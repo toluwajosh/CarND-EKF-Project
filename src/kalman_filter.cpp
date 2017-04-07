@@ -37,8 +37,9 @@ void KalmanFilter::Update(const VectorXd &z) {
   */
   //std::cout << "z: " << z << std::endl;
   //std::cout << "H_: " << H_ << std::endl;
-  //std::cout << "x_: " << x_ << std::endl;
+  std::cout << "F matrix: " << F_ << std::endl;
   VectorXd y = z - H_ * x_;
+  std::cout << "y: " << y << std::endl;
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
@@ -60,25 +61,40 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   */
   Tools tools;
 
-  float ro = z[0];
-  float phi = z[1];
-  float nu = z[2];
+  /////////////////////////////////////////////////////////////////
+  //float ro;
+  //float phi;
+  //float nu;
 
-  //MatrixXd Pj;
-  //VectorXd x_temp;
-  //Pj = MatrixXd(4, 3);
-  //x_temp = VectorXd(3);
-  //x_temp << ro, phi, nu;
-  ////ekf_.x_ << ro * cos(phi), ro * sin(phi), 0, 0; // nu * cos(phi), nu * sin(phi);
-  //Pj << cos(phi), -ro*sin(phi), 0,
-  //  sin(phi), ro*cos(phi), 0,
-  //  0, -nu*sin(phi), cos(phi),
-  //  0, nu*cos(phi), sin(phi);
-  //x_ = Pj * x_temp;
+  //ro = sqrt(x_[0] * x_[0] + x_[1] * x_[1]);
+  //phi = atan2(x_[1], x_[0]);
+  //nu = (x_[0] * x_[2] + x_[1] * x_[3]) / ro;
 
-  x_ << ro * cos(phi), ro * sin(phi), nu * cos(phi), nu * sin(phi);
+  //VectorXd xx;
+  //xx = VectorXd(3);
+  //xx << ro, phi, nu;
+  /////////////////////////////////////////////////////////////////
 
-  H_ = tools.CalculateJacobian(x_);
-  Update(z);
+  //////////////////////////////////////////////////////////////////
+  //float ro=z[0];
+  //float phi=z[1];
+  //float nu=z[2];
+  //x_ << ro * cos(phi), ro * sin(phi), nu * cos(phi), nu * sin(phi);
+  //H_ = tools.CalculateJacobian(x_);
+  //////////////////////////////////////////////////////////////////
 
+  // the update equations ////////////////////////////////////////////////////
+  VectorXd hx = H_ * x_;
+  VectorXd y = z - hx;
+  MatrixXd Ht = H_.transpose();
+  MatrixXd S = H_ * P_ * Ht + R_;
+  MatrixXd Si = S.inverse();
+  MatrixXd PHt = P_ * Ht;
+  MatrixXd K = PHt * Si;
+
+  //new estimate
+  x_ = x_ + (K * y);
+  long x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
 }
