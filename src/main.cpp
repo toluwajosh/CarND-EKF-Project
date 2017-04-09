@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
   //string in_file_name_ = argv[1];
   //string in_file_name_ = "..data/sample-laser-radar-measurement-data-1.txt";
-  string in_file_name_ = "sample-laser-radar-measurement-data-1.txt";
+  string in_file_name_ = "sample-laser-radar-measurement-data-2.txt";
   ifstream in_file_(in_file_name_.c_str(), ifstream::in);
 
   //string out_file_name_ = argv[2];

@@ -59,14 +59,18 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 	float c3 = (c1*c2);
 
   // initialize Hj and return initialized values in case there is division by zero
-  Hj << 0, 0, 0, 0,
-        0, 0, 0, 0,
-        0, 0, 0, 0;
+  //Hj << 0, 0, 0, 0,
+  //      0, 0, 0, 0,
+  //      0, 0, 0, 0;
 	//check division by zero
-	if (fabs(c1) < 0.0001){
-		std::cout << "CalculateJacobian () - Error - Division by Zero" << std::endl;
-    std::cout << "Hj: " << Hj << std::endl;
-		return Hj;
+	if (fabs(c1) < 0.00001){
+    VectorXd x_temp(4);
+    // in case of division by zero, set state to small float value
+    x_temp << 0.001, 0.01, 0.001, 0.001;
+    std::cout << "CalculateJacobian () - Error - Division by Zero" << std::endl;
+    //std::cout << "Hj: " << Hj << std::endl;
+    return CalculateJacobian(x_temp);
+    //return Hj;
 	}
 
 	//compute the Jacobian matrix
