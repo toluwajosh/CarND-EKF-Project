@@ -34,8 +34,8 @@ void KalmanFilter::Update(const VectorXd &z) {
   TODO:
     * update the state by using Kalman Filter equations
   */
-  VectorXd z_pred = H_ * x_;
-  VectorXd y = z - z_pred;
+
+  VectorXd y = z - H_ * x_; // prediction error
   MatrixXd Ht = H_.transpose();
   MatrixXd S = H_ * P_ * Ht + R_;
   MatrixXd Si = S.inverse();
@@ -43,7 +43,6 @@ void KalmanFilter::Update(const VectorXd &z) {
   MatrixXd K = PHt * Si;
 
   //new estimate
-  std::cout << x_ << std::endl;
   x_ = x_ + (K * y);
   long x_size = x_.size();
   MatrixXd I = MatrixXd::Identity(x_size, x_size);
@@ -55,8 +54,30 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
-  /*Tools tools;
-  VectorXd new_z = tools.CalculateJacobian(z);
-  Update(new_z);*/
 
+  float ro = sqrt(x_[0] * x_[0] + x_[1] * x_[1]);
+  float phi = 0.0; // atan(x_[1] / x_[0]) or = 0.0
+  if (fabs(x_[0]) > 0.001) {
+    phi = atan2(x_[1], x_[0]);    // arctan(py/px)
+  }
+  float ro_dot = 0.0; // or (x_[0] * x_[2] + x_[1] * x_[3]) / ro;
+  if (fabs(ro) > 0.001) {
+    ro_dot = (x_[0] * x_[2] + x_[1] * x_[3]) / ro; // (px * vy + py*vx)/rho_pred
+  }
+
+  VectorXd hx(3);
+  hx << ro, phi, ro_dot;
+  
+  VectorXd y = z - hx; // measurement error
+  MatrixXd Ht = H_.transpose();
+  MatrixXd S = H_ * P_ * Ht + R_;
+  MatrixXd Si = S.inverse();
+  MatrixXd PHt = P_ * Ht;
+  MatrixXd K = PHt * Si;
+
+  //new estimate
+  x_ = x_ + (K * y);
+  long x_size = x_.size();
+  MatrixXd I = MatrixXd::Identity(x_size, x_size);
+  P_ = (I - K * H_) * P_;
 }

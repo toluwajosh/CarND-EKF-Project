@@ -30,7 +30,7 @@ void check_arguments(int argc, char* argv[]) {
   } else if (argc > 3) {
     cerr << "Too many arguments.\n" << usage_instructions << endl;
   }
-
+  
   if (!has_valid_args) {
     exit(EXIT_FAILURE);
   }
@@ -58,7 +58,7 @@ int main(int argc, char* argv[]) {
 
   //string in_file_name_ = argv[1];
   //string in_file_name_ = "..data/sample-laser-radar-measurement-data-1.txt";
-  string in_file_name_ = "sample-laser-radar-measurement-data-1.txt";
+  string in_file_name_ = "sample-laser-radar-measurement-data-2.txt";
   ifstream in_file_(in_file_name_.c_str(), ifstream::in);
 
   //string out_file_name_ = argv[2];
@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
     iss >> sensor_type;
     if (sensor_type.compare("L") == 0) {
       // LASER MEASUREMENT
-
+      //continue;
       // read measurements at this timestamp
       meas_package.sensor_type_ = MeasurementPackage::LASER;
       meas_package.raw_measurements_ = VectorXd(2);
@@ -101,20 +101,20 @@ int main(int argc, char* argv[]) {
       measurement_pack_list.push_back(meas_package);
     } else if (sensor_type.compare("R") == 0) {
       // RADAR MEASUREMENT
-      continue;
-      //// read measurements at this timestamp
-      //meas_package.sensor_type_ = MeasurementPackage::RADAR;
-      //meas_package.raw_measurements_ = VectorXd(3);
-      //float ro;
-      //float phi;
-      //float ro_dot;
-      //iss >> ro;
-      //iss >> phi;
-      //iss >> ro_dot;
-      //meas_package.raw_measurements_ << ro, phi, ro_dot;
-      //iss >> timestamp;
-      //meas_package.timestamp_ = timestamp;
-      //measurement_pack_list.push_back(meas_package);
+      //continue;
+      // read measurements at this timestamp
+      meas_package.sensor_type_ = MeasurementPackage::RADAR;
+      meas_package.raw_measurements_ = VectorXd(3);
+      float ro;
+      float phi;
+      float ro_dot;
+      iss >> ro;
+      iss >> phi;
+      iss >> ro_dot;
+      meas_package.raw_measurements_ << ro, phi, ro_dot;
+      iss >> timestamp;
+      meas_package.timestamp_ = timestamp;
+      measurement_pack_list.push_back(meas_package);
     }
 
     // read ground truth data to compare later
@@ -187,5 +187,6 @@ int main(int argc, char* argv[]) {
     in_file_.close();
   }
 
+  //getchar(); // to prevent console from exiting after debug
   return 0;
 }
