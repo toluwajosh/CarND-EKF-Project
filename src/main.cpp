@@ -87,7 +87,7 @@ int main(int argc, char* argv[]) {
     iss >> sensor_type;
     if (sensor_type.compare("L") == 0) {
       // LASER MEASUREMENT
-      continue;
+      //continue;
       // read measurements at this timestamp
       meas_package.sensor_type_ = MeasurementPackage::LASER;
       meas_package.raw_measurements_ = VectorXd(2);
