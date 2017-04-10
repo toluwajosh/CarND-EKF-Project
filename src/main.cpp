@@ -54,15 +54,13 @@ int main(int argc, char* argv[]) {
   // input file ../../data/sample-laser-radar-measurement-data-1.txt
   // output file ../../outputs/output.txt
 
-  check_arguments(argc, argv);
+  //check_arguments(argc, argv);
 
   string in_file_name_ = argv[1];
-  //string in_file_name_ = "..data/sample-laser-radar-measurement-data-1.txt";
   //string in_file_name_ = "sample-laser-radar-measurement-data-2.txt";
   ifstream in_file_(in_file_name_.c_str(), ifstream::in);
 
   string out_file_name_ = argv[2];
-  //string out_file_name_ = "../outputs/output.txt";
   //string out_file_name_ = "output.txt";
   ofstream out_file_(out_file_name_.c_str(), ofstream::out);
 
@@ -172,6 +170,9 @@ int main(int argc, char* argv[]) {
 
     estimations.push_back(fusionEKF.ekf_.x_);
     ground_truth.push_back(gt_pack_list[k].gt_values_);
+
+    Tools tools;
+    //cout << tools.CalculateRMSE(estimations, ground_truth) << endl;
   }
 
   // compute the accuracy (RMSE)
@@ -187,6 +188,5 @@ int main(int argc, char* argv[]) {
     in_file_.close();
   }
 
-  //getchar(); // to prevent console from exiting after debug
   return 0;
 }
