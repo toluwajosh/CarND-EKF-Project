@@ -2,7 +2,7 @@
 Self-Driving Car Engineer Nanodegree Program
 
 ---
-** Cmake with Code::Blocks**
+**Cmake with Code::Blocks**
 
 Follow all directions, but when running cmake, use;
 
