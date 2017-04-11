@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
   // input file ../../data/sample-laser-radar-measurement-data-1.txt
   // output file ../../outputs/output.txt
 
-  //check_arguments(argc, argv);
+  check_arguments(argc, argv);
 
   string in_file_name_ = argv[1];
   //string in_file_name_ = "sample-laser-radar-measurement-data-2.txt";
