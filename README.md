@@ -1,19 +1,7 @@
 # Extended Kalman Filter Project Starter Code
 Self-Driving Car Engineer Nanodegree Program
 
----
-**Cmake with Code::Blocks**
-
-Follow all directions, but when running cmake, use;
-
-```
-$ cmake .. -G "CodeBlocks -  Unix Makefiles"
-
-```
-
-
-
-
+This project uses the Extended Kalman filter to estimate a more reliable value from the measurements of Laser and Radar sensors.
 ---
 
 ## Dependencies
