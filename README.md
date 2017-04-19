@@ -1,5 +1,6 @@
-# Extended Kalman Filter Project Starter Code
+# Extended Kalman Filter Project
 Self-Driving Car Engineer Nanodegree Program
+Term 2, Project 1
 
 This project uses the Extended Kalman filter to estimate a more reliable value from the measurements of Laser and Radar sensors.
 ---
