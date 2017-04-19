@@ -55,15 +55,13 @@ int main(int argc, char* argv[]) {
   // output file ../../outputs/output.txt
 
   check_arguments(argc, argv);
-
   string in_file_name_ = argv[1];
-  
-  //string in_file_name_ = "sample-laser-radar-measurement-data-2.txt"; // for debug
-  ifstream in_file_(in_file_name_.c_str(), ifstream::in);
-
   string out_file_name_ = argv[2];
 
+  //string in_file_name_ = "sample-laser-radar-measurement-data-2.txt"; // for debug
   //string out_file_name_ = "output.txt"; // for debug
+
+  ifstream in_file_(in_file_name_.c_str(), ifstream::in);
   ofstream out_file_(out_file_name_.c_str(), ofstream::out);
 
   check_files(in_file_, in_file_name_, out_file_, out_file_name_);

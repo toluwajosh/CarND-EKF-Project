@@ -120,9 +120,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     0, dt_4 / 4 * noise_ay, 0, dt_3 / 2 * noise_ay,
     dt_3 / 2 * noise_ax, 0, dt_2*noise_ax, 0,
     0, dt_3 / 2 * noise_ay, 0, dt_2*noise_ay;
-
+  
   // predict
+  
+  //if (fabs(dt) > 0.001) {
+  //  ekf_.Predict();
+  //}
   ekf_.Predict();
+  
 
   /*****************************************************************************
    *  Update: the state and covariance matrices.
